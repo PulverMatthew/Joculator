@@ -1,0 +1,21 @@
+Notes I'm taking about the process for which I can learn from.
+
+Pre-Alpha:
+One thing about the process I'm noticing is that  my code is spaghettifying and a lot of stuff can
+be encapsulated that isn't. For example, all of the sorting algorithms have patterns that could be
+reused in an object or turned into a function by itself. 
+
+General organization of the project and planning of the information architecture could be done
+better. If I had a better plan for the structure of the program, how different objects interact,
+etc, then I could move the actual programming part along much faster.
+
+I am noticing that I lack a lot of knowledge of data structures and algorithms that could speed
+up my code and make it more readable. For example, I didn't realize that dictionaries were hash maps,
+which have O(1) time complexity, could be useful for moving save files into memory or storing attribute
+lists for objects. Could also use it to handle menus better in conjunction with more objects and
+functions.
+
+Keeping track of variable states is an issue. Learning to debug would be helpful for making sure the
+program acts as it should. Will learn in the future alongside completing unit-testing before Alpha.
+
+Need to rewrite validation, as it's pretty much toothless in my program currently.

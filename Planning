@@ -1,0 +1,17 @@
+Joculator Description:
+Joculator is a clone of the popular poker-solitaire roguelite Balatro. The game will be built for the command line for simplicity. 
+For simplicity, the program will only implement the basic game loop instead of copying the whole game.
+The project will be constructed in the following parts:
+    1. main.py
+    2. jokers.py
+    3. cards.py
+The rest will be implemented later.
+Basic game flow:
+    1. Game shuffles given poker deck by picking a random card from the deck and creating a temporary deck for gameplay
+    2. Game selects first x cards from the deck to give to the player based on defined hand size
+    3. Player decides the cards to play/discard
+    4. Discard discards then replaced discarded cards up to hand size, play adds the score value of the selected hand to total.
+    5. Steps 3-4 loop based on number of plays/discards allowed until score value is obtained or 0 hands.
+    6. Loop the game flow with higher score value requirement.
+
+
