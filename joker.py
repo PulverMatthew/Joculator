@@ -19,6 +19,7 @@ class JokerCard:
     """
     def __init__(self):
         self.name = None
+        self.description = None
         self.rarity = None
         self.price = None
         self.effect = None
@@ -40,14 +41,18 @@ class JokerCard:
             type (str): The type of joker being defined.
         """
         type_information_lookup = {
-            'joker': ['Basic Joker', 'Common', 3, self.joker],
-            'greedy_joker': ['Greedy Joker', 'Common', 3, self.greedy_joker]
+            'joker': ['Basic Joker', 'Common', 3, 'Adds +3 Mult to your score.', self.joker],
+            'greedy_joker': ['Greedy Joker', 'Common', 3, 'Adds +3 Mult for every diamond card.', self.greedy_joker],
+            'lusty_joker': ['Lusty Joker', 'Common', 3, 'Adds +3 Mult for every heart card.', self.lusty_joker],
+            'wrathful_joker': ['Wrathful Joker', 'Common', 3, 'Adds +3 Mult for every spade card.', self.wrathful_joker],
+            'gluttonous_joker': ['Gluttonous Joker', 'Common', 3, 'Adds +3 Mult for every club card.', self.gluttonous_joker],
         }
         jonkler = type_information_lookup[joker_type]
         self.name = jonkler[0]
         self.rarity = jonkler[1]
         self.price = jonkler[2]
-        self.effect = jonkler[3]
+        self.description = jonkler[3]
+        self.effect = jonkler[4]
 
     def joker(self, score, card_deck=None, joker_deck=None):
         """
@@ -71,6 +76,33 @@ class JokerCard:
         for card in card_deck:
             match card.suit:
                 case 'Diamonds':
+                    score[0] += 3
+        return score
+    def lusty_joker(self, score, card_deck=None, joker_deck=None):
+        """
+        Played cards add +3 mult if they have a hearts suit.
+        """
+        for card in card_deck:
+            match card.suit:
+                case 'Hearts':
+                    score[0] += 3
+        return score
+    def wrathful_joker(self, score, card_deck=None, joker_deck=None):
+        """
+        Played cards add +3 mult if they have a spade suit.
+        """
+        for card in card_deck:
+            match card.suit:
+                case 'Spades':
+                    score[0] += 3
+        return score
+    def gluttonous_joker(self, score, card_deck=None, joker_deck=None):
+        """
+        Played cards add +3 mult if they have a club suit.
+        """
+        for card in card_deck:
+            match card.suit:
+                case 'Clubs':
                     score[0] += 3
         return score
 

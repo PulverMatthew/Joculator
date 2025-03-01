@@ -91,7 +91,7 @@ class Player:
         """
         valid_choices = []
         joker_catalog = []
-        joker_index = ['joker', 'greedy_joker']
+        joker_index = ['joker', 'greedy_joker', 'lusty_joker', 'wrathful_joker', 'gluttonous_joker']
         for i in range(3):
             joker = JokerCard()
             random_joker = joker_index[random.randint(0, len(joker_index)-1)]
@@ -106,7 +106,7 @@ class Player:
             print('!!JOKERS ON SALE!!:\n')
             print(f'Money: ${self.money}')
             for i, joker in enumerate(joker_catalog):
-                print(f'{i}. {joker.name} ({joker.rarity}), Price: {joker.price}')
+                print(f'{i}. {joker.name} ({joker.rarity}), Price: {joker.price}, Description: {joker.description}')
             user_input = input('\nChoose the joker to buy by index, or A to continue... ')
             if user_input not in valid_choices:
                 continue
