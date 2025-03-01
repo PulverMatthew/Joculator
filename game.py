@@ -4,7 +4,6 @@ Game module, houses the game logic for readability.
 from util import clear_screen, check_file, write_file, read_file, validate_input, save_generation
 from settings import settings
 from player import Player, Blind
-
 # from cards import PokerCard, PokerDeck
 def play_game():
     """
@@ -49,9 +48,8 @@ def play_game():
             case False:
                 outcome = True
         if outcome:
-            player.round += 1
-            player.score = 0
             player.reset()
+            player.shop()
         elif not outcome:
             input('You lose.')
             exit()
@@ -64,9 +62,9 @@ def play_game():
             case False:
                 outcome = True
         if outcome:
-            player.round += 1
-            player.score = 0
             player.reset()
+            player.shop()
+
         elif not outcome:
             clear_screen()
             input('You lose.')
@@ -80,10 +78,9 @@ def play_game():
             case False:
                 pass
         if outcome:
-            player.round += 1
-            player.ante += 1
-            player.score = 0
             player.reset()
+            player.shop()
+
         elif not outcome:
             input('You lose.')
             exit()

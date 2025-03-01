@@ -24,61 +24,69 @@ def shuffle(original_deck):
         original_deck[i], original_deck[j] = original_deck[j], original_deck[i]
     return original_deck
 
-def sort_suit(original_deck):
+class Sorter():
     """
-    Sorting method implementing a hybrid bucket sort/selection sort algorithm.
-    First, sublists are made from the original list sorted by suit.
-    Second, each sublist is selection sorted based on rank value hierarchy.
-    Finally, append a new list in suit order and return the sorted
-
-    Parameters: original_deck (lst): A list to be sorted.
-
-    Returns: modified_deck (lst): A list which is sorted.
+    Class used to aggregate sorting methods.
     """
-    buckets = {}
-    # Put same-suit cards in sublists.
-    for card in original_deck:
-        if card.suit not in buckets:
-            buckets[card.suit] = []
-        buckets[card.suit].append(card)
-    # For every sublist, selection sort the sublist by rank.
-    for card_list in buckets.values():
-        for i in range(len(card_list) - 1):
+    def __init__(self):
+        pass
+    @staticmethod
+    def sort_rank(original_deck):
+        """
+        Selection sort which sorts by rank irrespective of suit.
+        Parameters:
+            original_deck (lst): The original deck to be sorted.
+
+        Returns:
+            original_deck (lst): The original deck in rank-sorted form.
+        """
+        original_deck = []
+        for i in range(len(original_deck) - 1):
             min_index = i
-            for j in range(i + 1, len(card_list)):
-                compare_1 = PokerCard.rank_hierarchy_lookup[card_list[j].rank]
-                compare_2 = PokerCard.rank_hierarchy_lookup[card_list[min_index].rank]
+            for j in range(i + 1, len(original_deck)):
+                compare_1 = PokerCard.rank_hierarchy_lookup[original_deck[j].rank]
+                compare_2 = PokerCard.rank_hierarchy_lookup[original_deck[min_index].rank]
                 if compare_1 < compare_2:
                     min_index = j
-            card_list[i], card_list[min_index] = card_list[min_index], card_list[i]
-    modified_deck = []
-    # Append the sublists in suit order.
-    for suit in PokerCard.suits:
-        if suit in buckets:
-            modified_deck += buckets[suit]
-    for card in modified_deck:
-        print(card.suit)
-    return modified_deck
-def sort_rank(original_deck):
-    """
-    Selection sort which sorts by rank irrespective of suit.
-    Parameters:
-        original_deck (lst): The original deck to be sorted.
+            original_deck[i], original_deck[min_index] = original_deck[min_index], original_deck[i]
+        return original_deck
+    @staticmethod
+    def sort_suit(original_deck):
+        """
+        Sorting method implementing a hybrid bucket sort/selection sort algorithm.
+        First, sublists are made from the original list sorted by suit.
+        Second, each sublist is selection sorted based on rank value hierarchy.
+        Finally, append a new list in suit order and return the sorted
 
-    Returns:
-        original_deck (lst): The original deck in rank-sorted form.
-    """
-    original_deck = []
-    for i in range(len(original_deck) - 1):
-        min_index = i
-        for j in range(i + 1, len(original_deck)):
-            compare_1 = PokerCard.rank_hierarchy_lookup[original_deck[j].rank]
-            compare_2 = PokerCard.rank_hierarchy_lookup[original_deck[min_index].rank]
-            if compare_1 < compare_2:
-                min_index = j
-        original_deck[i], original_deck[min_index] = original_deck[min_index], original_deck[i]
-    return original_deck
-def hand_evaluator(played_hand):
+        Parameters: original_deck (lst): A list to be sorted.
+
+        Returns: modified_deck (lst): A list which is sorted.
+        """
+        buckets = {}
+        # Put same-suit cards in sublists.
+        for card in original_deck:
+            if card.suit not in buckets:
+                buckets[card.suit] = []
+            buckets[card.suit].append(card)
+        # For every sublist, selection sort the sublist by rank.
+        for card_list in buckets.values():
+            for i in range(len(card_list) - 1):
+                min_index = i
+                for j in range(i + 1, len(card_list)):
+                    compare_1 = PokerCard.rank_hierarchy_lookup[card_list[j].rank]
+                    compare_2 = PokerCard.rank_hierarchy_lookup[card_list[min_index].rank]
+                    if compare_1 < compare_2:
+                        min_index = j
+                card_list[i], card_list[min_index] = card_list[min_index], card_list[i]
+        modified_deck = []
+        # Append the sublists in suit order.
+        for suit in PokerCard.suits:
+            if suit in buckets:
+                modified_deck += buckets[suit]
+        for card in modified_deck:
+            print(card.suit)
+        return modified_deck
+def hand_evaluator(played_hand, joker_deck):
     """
     Evaluates identity of the given played hand. 
     Evaluates mult value and chip value based on evaluated
@@ -88,6 +96,7 @@ def hand_evaluator(played_hand):
 
     Parameters:
         played_hand (lst): List of cards selected by the player.
+        joker_deck (lst): List of jokers applied to the hand.
     Returns:
         eval_data (tuple): A tuple containing a string of the hand name
         and a score containing the evaluated value of the played hand.
@@ -116,7 +125,7 @@ def hand_evaluator(played_hand):
     active_cards = []
 
     # Straight: Sort the list by rank, and check if each rank is consecutive. No low aces.
-    sort_rank(played_hand)
+    Sorter.sort_rank(played_hand)
     consecutive_ranks = 0
     for i in range(len(played_hand)-1):
         if PokerCard.rank_hierarchy_lookup[played_hand[i].rank] - PokerCard.rank_hierarchy_lookup[played_hand[i+1].rank] == 1:
@@ -203,8 +212,10 @@ def hand_evaluator(played_hand):
     for card in active_cards:
         # eval_score[0] = placeholder for multiplier.
         eval_score[1] += card.chips
-        evaluated_score = eval_score[0] * eval_score[1]
-        eval_data = (eval_name, evaluated_score)
+    for joker in joker_deck.card_deck:
+        joker.apply(eval_score)
+    evaluated_score = eval_score[0] * eval_score[1]
+    eval_data = (eval_name, evaluated_score)
     # returns added mult and chip value.
     return eval_data
 
@@ -222,7 +233,6 @@ def validate_input(message, valid_options=None):
     Returns:
         str: The original message if it is valid.
     """
-    message = message.lower()
     try:
         if valid_options is None or message in valid_options:
             return message
@@ -317,7 +327,7 @@ def save_generation():
             '1\n', # 6. Current round
             '4\n', # 7. Current Money
             'Default\n', # 8. Chosen card deck
-            f'{seed_input}\n' # 10 What is the current seed? 
+            f'{seed_input}\n' # 10 What is the current seed?
             'False\n',  # 9 Has a game already been started?
 
         ]

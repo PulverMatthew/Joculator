@@ -4,6 +4,7 @@ The player module. Contains the player class, which regulates information relate
 import random
 import math
 from cards import PokerDeck
+from joker import JokerDeck, JokerCard
 from util import read_file, menu_display, validate_input, clear_screen, shuffle, hand_evaluator
 class Player:
     """
@@ -49,6 +50,7 @@ class Player:
         self.round = int(data_dict["round"])
         self.money = int(data_dict["money"])
         self.deck = PokerDeck()
+        self.jokers = JokerDeck()
         self.deck.set_deck(data_dict["deck"])
         self.seed = data_dict["seed"]
         random.seed(self.seed)
@@ -79,10 +81,45 @@ class Player:
         self.hands = int(data_dict["hands"])
         self.discards = int(data_dict["discards"])
         self.hand_size = int(data_dict["hand_size"])
-        self.money = int(data_dict["money"])
         self.deck = PokerDeck()
         self.deck.set_deck(data_dict["deck"])
 
+    def shop(self):
+        """
+        Shop for which to buy jokers. Enters the shop screen
+        whenever called. 
+        """
+        valid_choices = []
+        joker_catalog = []
+        joker_index = ['joker']
+        for i in range(3):
+            joker = JokerCard()
+            random_joker = joker_index[random.randint(0, len(joker_index)-1)]
+            joker.define_type(random_joker)
+            valid_choices.append(str(i))
+            joker_catalog.append(joker)
+        valid_choices.append('a')
+        shopping = True
+        while shopping:
+            clear_screen()
+            print('SHOP: IMPROVE YOUR RUN!')
+            print('!!JOKERS ON SALE!!:\n')
+            print(f'Money: ${self.money}')
+            for i, joker in enumerate(joker_catalog):
+                print(f'{i}. {joker.name} ({joker.rarity}), Price: {joker.price}')
+            user_input = input('\nChoose the joker to buy by index, or A to continue... ')
+            if user_input not in valid_choices:
+                continue
+            if user_input.lower() == 'a':
+                break
+            if user_input in valid_choices and self.money >= joker_catalog[int(user_input)].price:
+                selected_joker = joker_catalog[int(user_input)]
+                self.jokers.add(selected_joker)
+                joker_catalog.pop(int(user_input))
+                self.money -= selected_joker.price
+            elif self.money < joker_catalog[int(user_input)].price:
+                clear_screen()
+                input('Not enough money!')
 class Blind():
     """
     Blind class, regulates score requirements and special effects. 
@@ -180,7 +217,7 @@ class Blind():
             player.deck.deal(player.hand)
         while win_state is None:
             clear_screen()
-            hand_type = hand_evaluator(selected_cards)
+            hand_type = hand_evaluator(selected_cards, player.jokers)
             print(f'{self.blind_type}: Score at least {self.score_requirement}')
             print(f'Current score is: {player.score}')
             print(f'Hands: {player.hands}')
@@ -216,7 +253,7 @@ class Blind():
             if game_input in valid_choices and len(selected_cards) > 0:
                 match game_input:
                     case 'a':
-                        hand_score = hand_evaluator(selected_cards)
+                        hand_score = hand_evaluator(selected_cards, player.jokers)
                         player.score += hand_score[1]
                         player.hands -= 1
                         for i in range(player.hand_size - len(player.hand)):
@@ -236,6 +273,10 @@ class Blind():
                 pass
             if player.score >= self.score_requirement:
                 win_state = True
+                player.round += 1
+                player.ante += 1
+                player.money += self.reward
+                player.score = 0
             elif player.hands == 0:
                 win_state = False
             else:

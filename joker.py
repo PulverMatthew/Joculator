@@ -2,6 +2,7 @@
 The Joker module holds every class and function related to joker cards in 
 Joculator.
 """
+from util import clear_screen
 class JokerCard:
     """
     The JokerCard object is an object which allows for the special effects
@@ -13,25 +14,73 @@ class JokerCard:
         in the given game.
         effect (method): Passes a given joker method into the constructor. Allows
         for special effects depending on what is called.
-        chips (int): The number of chips a given Joker is modifying.
-        mult (int): The multiplier that a given Joker is modifying.s
+        score(lst): A list consisting of [chips, mult] which is passed into a joker
+        card for modification
     """
-    def __init__(self, rarity, effect, chips, mult):
-        rarity_price_chart = {
-            'common': 3,
-            'uncommon': 5,
-            'rare': 7,
-            'epic': 9,
-            'legendary': 15
+    def __init__(self):
+        self.name = None
+        self.rarity = None
+        self.price = None
+        self.effect = None
+
+    def apply(self, score):
+        """
+        Calls the stored effect with the given score.
+        """
+        if self.effect:
+            return self.effect(score)
+        else:
+            raise ValueError("No effect function provided")
+
+    def define_type(self, joker_type):
+        """
+        Defines type of joker.
+        
+        Parameters:
+            type (str): The type of joker being defined.
+        """
+        type_information_lookup = {
+            'joker': ['Basic Joker', 'Common', 3, self.joker]
         }
-        self.rarity = rarity
-        self.price = rarity_price_chart[rarity]
-        self.effect = effect
-        self.chips = chips
-        self.mult = mult
-    def joker(self):
+        jonkler = type_information_lookup[joker_type]
+        self.name = jonkler[0]
+        self.rarity = jonkler[1]
+        self.price = jonkler[2]
+        self.effect = jonkler[3]
+
+    def joker(self, score):
         """
         Defines a basic joker. The basic joker adds 4 mult to the current mult passed into
         the joker class.
+        
+        Common (Costs 3 dollars): Adds 4 to mult.
+
+        Parameters:
+        score (lst): A list containing mult and score of the current hand.
+
+        Returns:
+        score (lst): A list containing mult and score modified by the joker.
         """
-        self.mult += 4
+        score[0] += 4
+        return score
+
+class JokerDeck:
+    """
+    The JokerDeck class stores any Joker cards gained by the player.
+    It has a defined length which can be modified during gameplay.
+    
+    """
+    def __init__(self):
+        self.card_deck = []
+        self.deck_count = len(self.card_deck)
+        self.card_limit = 5
+
+    def add(self, joker):
+        """
+        Adds a joker to the deck, assuming your deck has space.
+        """
+        if self.deck_count < self.card_limit:
+            self.card_deck.append(joker)
+        else:
+            clear_screen()
+            input('You have too many jokers in your deck!')
