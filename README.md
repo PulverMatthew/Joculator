@@ -3,7 +3,7 @@ Joculator is a clone of the popular poker-solitaire roguelite Balatro. The game 
 For simplicity, the program will only implement the basic game loop instead of copying the whole game.
 Some wishlist features:
 1. Joker support, cards which give buffs to your given hand. (IMPLEMENTED!)
-2. Shop support, a shop to spend the money awarded after every blind.
+2. Shop support, a shop to spend the money awarded after every blind. (IMPLEMENTED!)
 3. Special card support, like tarot cards, or other special cards different from Balatro.
 4. De-selecting cards.
 5. Multiplayer support, beat the other player's hand to advance.
