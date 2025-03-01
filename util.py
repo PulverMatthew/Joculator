@@ -7,6 +7,7 @@ util.py: provides utility functions and objects for the rest of Joculator:
     menu_display provides a readable alternative for making menu options.
 """
 import os
+import time
 import random
 from cards import PokerCard
 def shuffle(original_deck):
@@ -86,7 +87,7 @@ class Sorter():
         for card in modified_deck:
             print(card.suit)
         return modified_deck
-def hand_evaluator(played_hand, joker_deck):
+def hand_evaluator(played_hand, joker_deck=None):
     """
     Evaluates identity of the given played hand. 
     Evaluates mult value and chip value based on evaluated
@@ -209,14 +210,26 @@ def hand_evaluator(played_hand, joker_deck):
                 eval_name = 'flush five'
     except IndexError:
         pass
+    if joker_deck is None:
+        return eval_name
+    clear_screen()
+    print('EVALUATING HAND...')
+    time.sleep(0.25)
     for card in active_cards:
         eval_score[0] += card.mult
         eval_score[1] += card.chips
+        print(f'[MULT:{eval_score[0]}, CHIPS:{eval_score[1]}]')
+        time.sleep(0.25)
     for joker in joker_deck.card_deck:
         joker.apply(eval_score, active_cards, joker_deck.card_deck)
+        print(f'[MULT:{eval_score[0]}, CHIPS:{eval_score[1]}]')
+        time.sleep(0.25)
     evaluated_score = eval_score[0] * eval_score[1]
+    print(f'TOTAL SCORE: {evaluated_score}')
+    time.sleep(2)
     eval_data = (eval_name, evaluated_score)
     # returns added mult and chip value.
+    clear_screen()
     return eval_data
 
 def validate_input(message, valid_options=None):

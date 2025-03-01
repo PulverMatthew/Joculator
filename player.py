@@ -221,13 +221,16 @@ class Blind():
             player.deck.deal(player.hand)
         while win_state is None:
             clear_screen()
-            hand_type = hand_evaluator(selected_cards, player.jokers)
-            print(f'{self.blind_type}: Score at least {self.score_requirement}')
+            hand_type = hand_evaluator(selected_cards)
+            print('Jokers: ')
+            for index, joker in enumerate(player.jokers.card_deck):
+                print(f'({index}. {joker.name}: {joker.description})', end=' ')
+            print(f'\n{self.blind_type}: Score at least {self.score_requirement}')
             print(f'Current score is: {player.score}')
             print(f'Hands: {player.hands}')
             print(f'Discards: {player.discards}')
             if hand_type is not None:
-                print(f'Hand Selected: {hand_type[0]}')
+                print(f'Hand Selected: {hand_type}')
             # Display selected cards on top of the player's hand. Update every turn.
             print('Selected Cards: ')
             for index, card in enumerate(selected_cards):
