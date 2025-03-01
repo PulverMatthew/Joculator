@@ -62,6 +62,26 @@ class PokerCard:
         self.is_face = False
         if str(self.rank) in ('J', 'Q', 'K'):
             self.is_face = True
+    def get_representation(self):
+        """
+        Returns a string representing the card as a text
+        art representation of a poker card.
+        """
+        suit_to_unicode = {
+            'Clubs':'♣',
+            'Spades':'♠',
+            'Hearts':'♠',
+            'Diamonds':'♦'
+        }
+        unicode_suit_symbol = suit_to_unicode[self.suit]
+        art = f"""
+                .------
+                |{self.rank}    |
+                |  {unicode_suit_symbol}  |
+                |    {self.rank}|
+                '------
+            """
+        return art
     def set_suit(self, suit):
         """
         Setter method for the suit value for a PokerCard object.
