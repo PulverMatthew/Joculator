@@ -28,7 +28,7 @@ class JokerCard:
         Calls the stored effect with the given score.
         """
         if self.effect:
-            return self.effect(score)
+            return self.effect(score, card_deck, joker_deck)
         else:
             raise ValueError("No effect function provided")
 

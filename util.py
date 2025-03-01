@@ -1,5 +1,5 @@
 """
-util.py: provides utility functions for the rest of Joculator:
+util.py: provides utility functions and objects for the rest of Joculator:
     validate_input validates given inputs, used for menus.
     check_file, read_file, write_file do file handling tasks.
     save_generation makes a save file if one doesn't exist.

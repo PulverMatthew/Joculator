@@ -78,6 +78,7 @@ def play_game():
             case False:
                 pass
         if outcome:
+            player.ante += 1
             player.reset()
             player.shop()
 

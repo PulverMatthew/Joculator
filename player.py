@@ -113,10 +113,14 @@ class Player:
             if user_input.lower() == 'a':
                 break
             if user_input in valid_choices and self.money >= joker_catalog[int(user_input)].price:
-                selected_joker = joker_catalog[int(user_input)]
-                self.jokers.add(selected_joker)
-                joker_catalog.pop(int(user_input))
-                self.money -= selected_joker.price
+                if self.jokers.card_limit < self.jokers.deck_count:
+                    clear_screen()
+                    input("You don't have enough room for this joker!")
+                else:
+                    selected_joker = joker_catalog[int(user_input)]
+                    self.jokers.add(selected_joker)
+                    joker_catalog.pop(int(user_input))
+                    self.money -= selected_joker.price
             elif self.money < joker_catalog[int(user_input)].price:
                 clear_screen()
                 input('Not enough money!')
@@ -274,7 +278,6 @@ class Blind():
             if player.score >= self.score_requirement:
                 win_state = True
                 player.round += 1
-                player.ante += 1
                 player.money += self.reward
                 player.score = 0
             elif player.hands == 0:
