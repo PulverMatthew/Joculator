@@ -210,10 +210,10 @@ def hand_evaluator(played_hand, joker_deck):
     except IndexError:
         pass
     for card in active_cards:
-        # eval_score[0] = placeholder for multiplier.
+        eval_score[0] += card.mult
         eval_score[1] += card.chips
     for joker in joker_deck.card_deck:
-        joker.apply(eval_score)
+        joker.apply(eval_score, active_cards, joker_deck.card_deck)
     evaluated_score = eval_score[0] * eval_score[1]
     eval_data = (eval_name, evaluated_score)
     # returns added mult and chip value.

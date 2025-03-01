@@ -23,7 +23,7 @@ class JokerCard:
         self.price = None
         self.effect = None
 
-    def apply(self, score):
+    def apply(self, score, card_deck=None, joker_deck=None):
         """
         Calls the stored effect with the given score.
         """
@@ -40,7 +40,8 @@ class JokerCard:
             type (str): The type of joker being defined.
         """
         type_information_lookup = {
-            'joker': ['Basic Joker', 'Common', 3, self.joker]
+            'joker': ['Basic Joker', 'Common', 3, self.joker],
+            'greedy_joker': ['Greedy Joker', 'Common', 3, self.greedy_joker]
         }
         jonkler = type_information_lookup[joker_type]
         self.name = jonkler[0]
@@ -48,7 +49,7 @@ class JokerCard:
         self.price = jonkler[2]
         self.effect = jonkler[3]
 
-    def joker(self, score):
+    def joker(self, score, card_deck=None, joker_deck=None):
         """
         Defines a basic joker. The basic joker adds 4 mult to the current mult passed into
         the joker class.
@@ -56,13 +57,23 @@ class JokerCard:
         Common (Costs 3 dollars): Adds 4 to mult.
 
         Parameters:
-        score (lst): A list containing mult and score of the current hand.
+        score (lst): A list containing( mult and score of the current hand.
 
         Returns:
         score (lst): A list containing mult and score modified by the joker.
         """
         score[0] += 4
         return score
+    def greedy_joker(self, score, card_deck=None, joker_deck=None):
+        """
+        Played cards add +3 mult if they have a diamond suit.
+        """
+        for card in card_deck:
+            match card.suit:
+                case 'Diamonds':
+                    score[0] += 3
+        return score
+
 
 class JokerDeck:
     """

@@ -91,7 +91,7 @@ class Player:
         """
         valid_choices = []
         joker_catalog = []
-        joker_index = ['joker']
+        joker_index = ['joker', 'greedy_joker']
         for i in range(3):
             joker = JokerCard()
             random_joker = joker_index[random.randint(0, len(joker_index)-1)]

@@ -62,6 +62,7 @@ class PokerCard:
         self.is_face = False
         if str(self.rank) in ('J', 'Q', 'K'):
             self.is_face = True
+        self.mult = 0 
     def get_representation(self):
         """
         Returns a string representing the card as a text
