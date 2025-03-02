@@ -1,6 +1,13 @@
 Joculator Description:
 Joculator is a clone of the popular poker-solitaire roguelite Balatro. The game will be built for the command line for simplicity. 
 For simplicity, the program will only implement the basic game loop instead of copying the whole game.
+
+HOW TO PLAY:
+1. Download the source code in the releases section.
+2. Decompress the compressed folder with a file archiver.
+3. Navigate to the dist folder.
+4. The executable should be found in that folder.
+   
 Some wishlist features:
 1. Joker support, cards which give buffs to your given hand. (IMPLEMENTED!)
 2. Shop support, a shop to spend the money awarded after every blind. (IMPLEMENTED!)
