@@ -138,6 +138,7 @@ class Blind():
         self.score_requirement = 200 * math.exp2(int(difficulty))
         self.blind_type = 'Default'
         self.reward = 1
+        self.is_boss = False
 
     def small_blind(self):
         """
@@ -146,6 +147,7 @@ class Blind():
         self.score_requirement = self.score_requirement
         self.blind_type = 'Small Blind'
         self.reward = 3
+        self.is_boss = False
     def big_blind(self):
         """
         Big blind, has a 1.5X multiplier with a reward of 5.
@@ -153,6 +155,7 @@ class Blind():
         self.score_requirement = self.score_requirement * 1.5
         self.blind_type = 'Big Blind'
         self.reward = 5
+        self.is_boss = False
     def wall(self):
         """
         The Wall: Has a 4X multiplier rather than the usual
@@ -161,6 +164,8 @@ class Blind():
         self.score_requirement = self.score_requirement * 4
         self.blind_type = 'The Wall'
         self.reward = 7
+        self.is_boss = True
+    
     def challenge_query(self, player):
         """
         Challenge query calls a method which gives the
@@ -188,6 +193,11 @@ class Blind():
                 '1':'Select Blind',
                 '2':'Skip'
             }
+            match self.is_boss:
+                case True:
+                    options.pop('2')
+                case False:
+                    pass
             menu_display(options)
             blind_decision = None
             user_input = input('Choose an option: ')
@@ -231,7 +241,6 @@ class Blind():
             print(f'Discards: {player.discards}')
             if hand_type is not None:
                 print(f'Hand Selected: {hand_type}')
-            # Display selected cards on top of the player's hand. Update every turn.
             print('Selected Cards: ')
             for index, card in enumerate(selected_cards):
                 print(f'({index}. {card.suit} {card.rank})', end=' ')
