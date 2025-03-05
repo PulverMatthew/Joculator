@@ -86,7 +86,7 @@ class Sorter():
         for card in modified_deck:
             print(card.suit)
         return modified_deck
-def hand_evaluator(played_hand, joker_deck=None):
+def hand_evaluator(played_hand, joker_deck=None, player=None):
     """
     Evaluates identity of the given played hand. 
     Evaluates mult value and chip value based on evaluated
@@ -133,7 +133,7 @@ def hand_evaluator(played_hand, joker_deck=None):
         if PokerCard.rank_hierarchy_lookup[played_hand[i].rank] - PokerCard.rank_hierarchy_lookup[played_hand[i+1].rank] == -1:
             consecutive_ranks += 1
     if consecutive_ranks == 4:
-        hand_descriptors[0] = ('straight')
+        hand_descriptors[0] = 'straight'
         eval_name = 'straight'
         active_cards = played_hand
     # Pair, 2 Pair, 3Kind, 4Kind, Full House:
@@ -157,7 +157,6 @@ def hand_evaluator(played_hand, joker_deck=None):
             case 4:
                 of_kind[2] += 1
                 active_cards += card_list
-
             case 5:
                 of_kind[3] += 1
                 active_cards += card_list
@@ -222,7 +221,7 @@ def hand_evaluator(played_hand, joker_deck=None):
         print(f'[MULT:{eval_score[0]}, CHIPS:{eval_score[1]}]')
         time.sleep(0.25)
     for joker in joker_deck.card_deck:
-        joker.apply(eval_score, active_cards, joker_deck.card_deck)
+        joker.apply(eval_score, active_cards, joker_deck.card_deck, player)
         print(f'[MULT:{eval_score[0]}, CHIPS:{eval_score[1]}]')
         time.sleep(0.25)
     evaluated_score = eval_score[0] * eval_score[1]
@@ -268,7 +267,7 @@ def display_ascii_side_by_side(arts):
     lines = []
     max_height = max(art.count('\n') + 1 for art in arts)
     for art in arts:
-        split_art = art.splitlines()    
+        split_art = art.splitlines()
         while len(split_art) < max_height:
             split_art.append("")
             lines.append(split_art)
@@ -388,4 +387,3 @@ def menu_display(options):
     """
     for key, value in options.items():
         print(f"{key}: {value}")
-

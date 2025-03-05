@@ -91,7 +91,8 @@ class Player:
         """
         valid_choices = []
         joker_catalog = []
-        joker_index = ['joker', 'greedy_joker', 'lusty_joker', 'wrathful_joker', 'gluttonous_joker']
+        joker_index = ['joker', 'greedy_joker', 'lusty_joker', 'wrathful_joker', 'gluttonous_joker', 'love_for_money',
+                       'copy_joker']
         for i in range(3):
             joker = JokerCard()
             random_joker = joker_index[random.randint(0, len(joker_index)-1)]
@@ -120,6 +121,7 @@ class Player:
                     selected_joker = joker_catalog[int(user_input)]
                     self.jokers.add(selected_joker)
                     joker_catalog.pop(int(user_input))
+                    valid_choices.pop(int(user_input))
                     self.money -= selected_joker.price
             elif self.money < joker_catalog[int(user_input)].price:
                 clear_screen()
@@ -271,7 +273,7 @@ class Blind():
             if game_input in valid_choices and len(selected_cards) > 0:
                 match game_input:
                     case 'a':
-                        hand_score = hand_evaluator(selected_cards, player.jokers)
+                        hand_score = hand_evaluator(selected_cards, player.jokers, player)
                         player.score += hand_score[1]
                         player.hands -= 1
                         for i in range(player.hand_size - len(player.hand)):
