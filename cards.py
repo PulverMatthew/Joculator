@@ -62,7 +62,8 @@ class PokerCard:
         self.is_face = False
         if str(self.rank) in ('J', 'Q', 'K'):
             self.is_face = True
-        self.mult = 0 
+        self.mult = 0
+
     def get_representation(self):
         """
         Returns a string representing the card as a text
@@ -71,17 +72,25 @@ class PokerCard:
         suit_to_unicode = {
             'Clubs':'♣',
             'Spades':'♠',
-            'Hearts':'♠',
+            'Hearts':'♥',
             'Diamonds':'♦'
         }
         unicode_suit_symbol = suit_to_unicode[self.suit]
         art = f"""
-                .------
-                |{self.rank}    |
-                |  {unicode_suit_symbol}  |
-                |    {self.rank}|
-                '------
-            """
+.------
+|{self.rank}    |
+|  {unicode_suit_symbol}  |
+|    {self.rank}|
+'------
+"""
+        if self.rank == '10':
+            art = f"""
+.------
+|10   |
+|  {unicode_suit_symbol}  |
+|   10|
+'------
+"""
         return art
     def set_suit(self, suit):
         """

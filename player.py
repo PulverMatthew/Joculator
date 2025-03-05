@@ -5,7 +5,7 @@ import random
 import math
 from cards import PokerDeck
 from joker import JokerDeck, JokerCard
-from util import read_file, menu_display, validate_input, clear_screen, shuffle, hand_evaluator
+from util import read_file, menu_display, validate_input, clear_screen, shuffle, hand_evaluator, display_ascii_side_by_side
 class Player:
     """
     The player class, represents the player and all information related to the player. 
@@ -165,7 +165,7 @@ class Blind():
         self.blind_type = 'The Wall'
         self.reward = 7
         self.is_boss = True
-    
+
     def challenge_query(self, player):
         """
         Challenge query calls a method which gives the
@@ -242,13 +242,15 @@ class Blind():
             if hand_type is not None:
                 print(f'Hand Selected: {hand_type}')
             print('Selected Cards: ')
-            for index, card in enumerate(selected_cards):
-                print(f'({index}. {card.suit} {card.rank})', end=' ')
-            print('\n')
+            selection_representations = []
+            for card in selected_cards:
+                selection_representations.append(card.get_representation())
+            print(display_ascii_side_by_side(selection_representations))
             print('Current Hand: ')
-            for index, card in enumerate(player.hand):
-                print(f'({index}. {card.suit} {card.rank})', end=' ')
-            print('\n')
+            hand_representations = []
+            for card in player.hand:
+                hand_representations.append(card.get_representation())
+            print(display_ascii_side_by_side(hand_representations))
             display = {
                 'a': 'Play',
                 'b': 'Discard'

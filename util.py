@@ -41,7 +41,6 @@ class Sorter():
         Returns:
             original_deck (lst): The original deck in rank-sorted form.
         """
-        original_deck = []
         for i in range(len(original_deck) - 1):
             min_index = i
             for j in range(i + 1, len(original_deck)):
@@ -102,6 +101,8 @@ def hand_evaluator(played_hand, joker_deck=None):
         eval_data (tuple): A tuple containing a string of the hand name
         and a score containing the evaluated value of the played hand.
     """
+    eval_score = [1,5]
+    eval_name = 'high'
     # if played hand is null, break out of the function.
     if played_hand == []:
         return None
@@ -126,13 +127,14 @@ def hand_evaluator(played_hand, joker_deck=None):
     active_cards = []
 
     # Straight: Sort the list by rank, and check if each rank is consecutive. No low aces.
-    Sorter.sort_rank(played_hand)
+    played_hand = Sorter.sort_rank(played_hand)
     consecutive_ranks = 0
     for i in range(len(played_hand)-1):
-        if PokerCard.rank_hierarchy_lookup[played_hand[i].rank] - PokerCard.rank_hierarchy_lookup[played_hand[i+1].rank] == 1:
+        if PokerCard.rank_hierarchy_lookup[played_hand[i].rank] - PokerCard.rank_hierarchy_lookup[played_hand[i+1].rank] == -1:
             consecutive_ranks += 1
     if consecutive_ranks == 4:
-        hand_descriptors.append('straight')
+        hand_descriptors[0] = ('straight')
+        eval_name = 'straight'
         active_cards = played_hand
     # Pair, 2 Pair, 3Kind, 4Kind, Full House:
     buckets = {}
@@ -188,10 +190,9 @@ def hand_evaluator(played_hand, joker_deck=None):
     if same_suit == 5:
         hand_descriptors.append('flush')
         active_cards = played_hand
-    eval_score = [1,5]
-    eval_name = 'high'
+
     eval_data = (eval_name, eval_score)
-    if len(active_cards) < 5:
+    if len(active_cards) <= 5:
         eval_score = hand_score_lookup[hand_descriptors[0]]
         eval_name = hand_descriptors[0]
     try:
@@ -254,6 +255,30 @@ def validate_input(message, valid_options=None):
     except ValueError as ve:
         print(f"Input error: {ve}")
 
+def display_ascii_side_by_side(arts):
+    """
+    A method to display the ascii art defined by get_representation
+    side by side for gameplay purposes.
+
+    Parameters:
+        *arts (lst): An arbitrarily long list of ascii art to display side-by-side.
+    """
+    if arts == []:
+        return None
+    lines = []
+    max_height = max(art.count('\n') + 1 for art in arts)
+    for art in arts:
+        split_art = art.splitlines()    
+        while len(split_art) < max_height:
+            split_art.append("")
+            lines.append(split_art)
+    for i in range(max_height):
+        combined_line = ""
+
+
+        for art_lines in lines:
+            combined_line += art_lines[i] + "  "
+        print(combined_line)
 
 # List of allowed filenames
 filenamesAllowed = ['save.txt']
@@ -363,3 +388,4 @@ def menu_display(options):
     """
     for key, value in options.items():
         print(f"{key}: {value}")
+

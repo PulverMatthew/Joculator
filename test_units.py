@@ -6,7 +6,7 @@ functionalities.
 
 """
 from cards import PokerCard, PokerDeck
-from util import validate_input, shuffle, sort_suit, hand_evaluator
+from util import validate_input, shuffle, hand_evaluator, Sorter
 
 def test_utility_functions():
     """
@@ -14,12 +14,44 @@ def test_utility_functions():
     Tests the input validation to make sure that invalid
     inputs are caught and valid inputs are accepted.
     """
-    card_deck = [PokerCard('Hearts', '2'), PokerCard('Hearts', '2'), PokerCard('Hearts', '2'), PokerCard('Hearts', '2'), PokerCard('Hearts', '2')]
-    assert hand_evaluator(card_deck) == [50, 110]
-    card_deck = [PokerCard('Hearts', '2'), PokerCard('Hearts', '3'), PokerCard('Hearts', '4'), PokerCard('Hearts', '5'), PokerCard('Hearts', '6')]
-    assert hand_evaluator(card_deck) == [20, 120]
-    card_deck = [PokerCard('Hearts', '2'), PokerCard('Hearts', '2')]
-    assert hand_evaluator(card_deck) == [2, 9]
+    card1 = PokerCard('Hearts', '6')
+    card2 = PokerCard('Hearts', '2')
+    card3 = PokerCard('Hearts', '3')
+    card4 = PokerCard('Hearts', '4')
+    card5 = PokerCard('Hearts', '5')
+    card6 = PokerCard('Hearts', '5')
+    card7 = PokerCard('Hearts', '5')
+    card8 = PokerCard('Hearts', '5')
+    card11 = PokerCard('Hearts', '6')
+    card12 = PokerCard('Hearts', '5')
+    card13 = PokerCard('Clubs', '5')
+    card14 = PokerCard('Clubs', '6')
+    empty = []
+    high_card = [card1, card2, card3, card4]
+    pair = [card5, card6, card1, card2]
+    pair2 = [card1, card11, card5, card6]
+    kind3 = [card5, card6, card7, card1]
+    kind4 = [card5, card6, card7, card8]
+    kind5 = [card5, card6, card7, card8, card13]
+    flush5 = [card5,card6,card7,card8,card12]
+    fullhouse = [card1, card11, card13, card5, card6]
+    flushhouse = [card1, card11, card5, card6, card7]
+    flush = [card1, card2, card3, card7, card8]
+    straight = [card2,card3,card4,card5, card14]
+    straightflush = [card1, card2, card3, card4, card5]
+    assert hand_evaluator(empty) is None
+    assert hand_evaluator(high_card) == 'high'
+    assert hand_evaluator(pair) == 'pair'
+    assert hand_evaluator(pair2) == '2pair'
+    assert hand_evaluator(kind3) == '3kind'
+    assert hand_evaluator(kind4) == '4kind'
+    assert hand_evaluator(kind5) == '5kind'
+    assert hand_evaluator(flush5) == 'flush five'
+    assert hand_evaluator(fullhouse) == 'fullhouse'
+    assert hand_evaluator(flushhouse) == 'flush house'
+    assert hand_evaluator(flush) == 'flush'
+    assert hand_evaluator(straight) == 'straight'
+    assert hand_evaluator(straightflush) == 'straight flush'
 
 
     menu_options = {
@@ -36,7 +68,7 @@ def test_utility_functions():
     default_deck_original = PokerDeck()
     default_deck_modified = PokerDeck()
     default_deck_modified.card_deck = shuffle(default_deck_modified.card_deck)
-    default_deck_modified.card_deck = sort_suit(default_deck_modified.card_deck)
+    default_deck_modified.card_deck = Sorter.sort_suit(default_deck_modified.card_deck)
     for i in range(default_deck_modified.card_count):
         assert (default_deck_original.card_deck[i].suit, default_deck_original.card_deck[i].rank) == (default_deck_modified.card_deck[i].suit, default_deck_modified.card_deck[i].rank)
 
@@ -46,7 +78,7 @@ def test_utility_functions():
     oops_modified = PokerDeck()
     oops_modified.set_deck('Oops')
     oops_modified.card_deck = shuffle(oops_modified.card_deck)
-    oops_modified.card_deck = sort_suit(oops_modified.card_deck)
+    oops_modified.card_deck = Sorter.sort_suit(oops_modified.card_deck)
     for i in range(oops_original.card_count):
         assert (oops_original.card_deck[i].suit, oops_original.card_deck[i].rank) == (oops_modified.card_deck[i].suit, oops_modified.card_deck[i].rank)
 
