@@ -125,14 +125,14 @@ class JokerCard:
                         pass
     def copy_joker(self, score=None, card_deck=None, joker_deck=None, player=None):
         """
-        Copies the leftmost joker in the joker deck, then applies its effect.
+        Copies the joker to the left of this card in the joker deck, then applies its effect.
         """
         sys.setrecursionlimit(10)
         self_index = 0
         for i, card in enumerate(joker_deck):
             if self is card:
                 self_index = i
-        # Try to apply the joker effect of the leftmost joker
+        # Try to apply the joker effect of the joker on the left.
         try:
             joker_deck[self_index-1].apply(score, card_deck,joker_deck, player)
             print(f'Copied: {joker_deck[self_index-1].name}')
