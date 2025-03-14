@@ -33,7 +33,7 @@ class PokerCard:
         Initializes the PokerCard object with a suit, rank, and chip value.
 
         Parameters:
-            suit (str) (): Specifies the suit of the playing card.
+            suit (str): Specifies the suit of the playing card.
             rank (str): Specifies the rank of the playing card.
             'Clubs', 'Spades', 'Hearts', 'Diamonds'
             '2', '3', '4', '5', '6', '7', '8', '9', '10', 'A', 'J', 'Q', 'K'
