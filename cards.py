@@ -184,8 +184,12 @@ class PokerDeck:
             target_list (lst): The list for which the poker card
             will be sent to. 
         """
-        selected_hand = self.card_deck.pop()
-        target_list.append(selected_hand)
+        try:
+            selected_hand = self.card_deck.pop()
+            target_list.append(selected_hand)
+        # If you can't pop the poker card from the card deck, ignore.
+        except IndexError:
+            pass
     def default_deck(self):
         """
         Generates the default deck of playing cards.

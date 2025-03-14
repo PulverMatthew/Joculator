@@ -228,6 +228,8 @@ class Blind():
         """
         shuffle(player.deck.card_deck)
         selected_cards = []
+        discard_pile = []
+        total_cards = player.deck.card_count
         win_state = None
         for i in range(player.hand_size - len(player.hand)):
             player.deck.deal(player.hand)
@@ -241,6 +243,7 @@ class Blind():
             print(f'Current score is: {player.score}')
             print(f'Hands: {player.hands}')
             print(f'Discards: {player.discards}')
+            print(f'Cards: {len(player.deck.card_deck)}/{total_cards}')
             if hand_type is not None:
                 print(f'Hand Selected: {hand_type}')
             print('Selected Cards: ')
@@ -288,6 +291,7 @@ class Blind():
                 index = int(game_input)
                 if 0 <= index < len(player.hand):
                     card = player.hand.pop(index)
+                    discard_pile.append(card)
                     selected_cards.append(card)
             else:
                 pass
@@ -296,7 +300,9 @@ class Blind():
                 player.round += 1
                 player.money += self.reward
                 player.score = 0
-            elif player.hands == 0:
+                player.deck.card_deck.append(discard_pile)
+                player.deck.card_deck.append(player.hand)
+            elif player.hands == 0 or len(player.deck.card_deck) == 0:
                 win_state = False
             else:
                 win_state = None

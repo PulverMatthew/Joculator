@@ -43,7 +43,6 @@ def play_game(file_handler):
             case False:
                 outcome = True
         if outcome:
-            player.reset(file_handler)
             player.shop()
         elif not outcome:
             clear_screen()
@@ -59,7 +58,6 @@ def play_game(file_handler):
             case False:
                 outcome = True
         if outcome:
-            player.reset(file_handler)
             player.shop()
 
         elif not outcome:
@@ -77,7 +75,6 @@ def play_game(file_handler):
                 pass
         if outcome:
             player.ante += 1
-            player.reset(file_handler)
             player.shop()
 
         elif not outcome:
