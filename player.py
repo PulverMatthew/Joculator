@@ -5,12 +5,12 @@ import random
 import math
 from cards import PokerDeck
 from joker import JokerDeck, JokerCard
-from util import read_file, menu_display, validate_input, clear_screen, shuffle, hand_evaluator, display_ascii_side_by_side
+from util import menu_display, validate_input, clear_screen, shuffle, hand_evaluator, display_ascii_side_by_side
 class Player:
     """
     The player class, represents the player and all information related to the player. 
     """
-    def __init__(self):
+    def __init__(self, file_handler):
         """
         Initializes the player object. Imports data from the save file.
         hands: Integer representing number of hands which can be played.
@@ -26,7 +26,7 @@ class Player:
 
         """
         # Strip all lines from the file at once
-        data_lines = read_file('save.txt')
+        data_lines = file_handler.data
         keys = [
             "hands",
             "discards",
@@ -57,13 +57,13 @@ class Player:
 
         self.score = 0
         self.hand = []
-    def reset(self):
+    def reset(self, file_handler):
         """
         Resets appropriate player values to their defaults.
         Does not reset ante, round, money, or name.
         """
         # Strip all lines from the file at once
-        data_lines = read_file('save.txt')
+        data_lines = file_handler.data
         keys = [
             "hands",
             "discards",

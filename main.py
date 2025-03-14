@@ -2,7 +2,8 @@
 Main module of the game. Contains functions for settings
 and for the main menu. 
 """
-from util import validate_input, save_generation, clear_screen, menu_display
+from util import validate_input, clear_screen, menu_display
+from filehandling import FileHandler
 from game import play_game
 from settings import settings
 def main():
@@ -10,7 +11,7 @@ def main():
     Main loop, only valid way to start the program and contains the main menu.
     Access the game, game settings, credits menu, and exit from here.
     """
-    save_generation()
+    default_file = FileHandler('save.txt')
     game_loop = True
     while game_loop:
         menu_options = {
@@ -27,10 +28,10 @@ def main():
 
         match game_input:
             case '1':
-                play_game()
+                play_game(default_file)
 
             case '2':
-                settings()
+                settings(default_file)
 
             case '3':
                 clear_screen()
@@ -46,6 +47,8 @@ def main():
 
             case '4':
                 clear_screen()
+                # Writes current save data found in memory to save file.
+                default_file.close_file()
                 game_loop = False
 
             case _:

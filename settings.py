@@ -1,17 +1,15 @@
 """
 Settings module, allows settings to be called from anywhere in the program without an ImportError.
 """
-from util import menu_display, read_file, write_file, clear_screen, validate_input
-def settings():
+from util import menu_display, clear_screen, validate_input
+def settings(file_handler):
     """
     Settings function which allows the user to modify the save file containing game settings.
     Settings cannot be changed if a game is currently being played.
     This is mainly meant to prevent cheating, but nothing stops you from modifying the save file. 
     """
-    # Reads save file and copies it to variable 'data' then closes.
     save_settings = False
-    data = read_file('save.txt')
-    # Opens save file in write mode. Loops until player has confirmed every setting changed.
+    data = file_handler.data
     while not save_settings:
         clear_screen()
         print('Current values:')
@@ -103,7 +101,7 @@ def settings():
                 game_input = validate_input(user_input)
                 data[8] = game_input + '\n'
             case '5':
-                write_file('save.txt', data)
+                file_handler.write_file(data)
                 save_settings = True
 
             case _:
